@@ -25,5 +25,4 @@ abstract class FoodDao {
 //    @Transaction
 //    @Query("SELECT * FROM recipes WHERE food_id == :foodId")
 //    abstract fun getFoodWithRecipeById(foodId: Long): Observable<List<FoodWithRecipe>>
-
 }
