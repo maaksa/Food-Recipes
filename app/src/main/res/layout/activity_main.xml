@@ -39,7 +39,6 @@
         android:id="@+id/loadingPb"
         android:layout_width="2dp"
         android:layout_height="6dp"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -15,7 +15,7 @@ import kotlin.math.roundToInt
 class FoodViewHolder(private val itemBinding: LayoutItemFoodByTitleBinding) :
     RecyclerView.ViewHolder(itemBinding.root) {
 
-    fun init(item: Food, action: FoodAdapter.OnCategoryItemClickListener) {
+    fun init(item: Food, action: FoodAdapter.OnFoodItemClickListener) {
         itemBinding.foodByNameItemCl.setOnClickListener {
             action.onItemClick(item, adapterPosition)
         }

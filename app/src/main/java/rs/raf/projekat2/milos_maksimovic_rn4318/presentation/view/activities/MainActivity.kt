@@ -30,7 +30,7 @@ import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.viewmodel.FoodViewM
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickListener,
-    FoodAdapter.OnCategoryItemClickListener {
+    FoodAdapter.OnFoodItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -65,8 +65,12 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
                 searchItem.collapseActionView()
 
                 if (query != null) {
-                    showHide(binding.categoryListRv)
-                    showHide(binding.foodByNameListRv)
+                    if (binding.foodByNameListRv.visibility == View.VISIBLE) {
+
+                    } else {
+                        showHide(binding.categoryListRv)
+                        showHide(binding.foodByNameListRv)
+                    }
                     foodByNameViewModel.fetchAllFoods(query, 1)
                     foodByNameViewModel.getAllByName(query)
                 }
@@ -113,6 +117,13 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
         binding.foodByNameListRv.layoutManager = LinearLayoutManager(this)
         foodByNameAdapter = FoodAdapter(this, Glide.with(this));
         binding.foodByNameListRv.adapter = foodByNameAdapter
+
+        if (binding.categoryListRv.visibility == View.VISIBLE) {
+
+        } else {
+            showHide(binding.categoryListRv)
+            showHide(binding.foodByNameListRv)
+        }
     }
 
     private fun initObservers() {
@@ -123,6 +134,9 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
         foodByNameViewModel.foodState.observe(this, Observer {
             renderStateFood(it)
         })
+
+//        showHide(binding.categoryListRv)
+//        showHide(binding.foodByNameListRv)
 
         categoryViewModel.getAllCategories()
 
@@ -192,7 +206,14 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
     }
 
     override fun onItemClick(item: FoodCategory, position: Int) {
-        TODO("Not yet implemented")
+        if (binding.foodByNameListRv.visibility == View.VISIBLE) {
+
+        } else {
+            showHide(binding.categoryListRv)
+            showHide(binding.foodByNameListRv)
+        }
+        foodByNameViewModel.fetchAllFoods(item.title, 1)
+        foodByNameViewModel.getAllByName(item.title)
     }
 
     override fun onItemClick(item: Food, position: Int) {

@@ -81,4 +81,9 @@ class FoodViewModel(
         publishSubject.onNext(title)
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        subscriptions.dispose()
+    }
+
 }

@@ -14,7 +14,7 @@ import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.recycler.viewh
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.recycler.viewholder.FoodViewHolder
 
 class FoodAdapter(
-    private val clickListener: OnCategoryItemClickListener,
+    private val clickListener: OnFoodItemClickListener,
     private val glide: RequestManager
 ) : ListAdapter<Food, FoodViewHolder>(FoodDiffCallback()) {
 
@@ -30,7 +30,7 @@ class FoodAdapter(
         holder.init(singleFood, clickListener)
     }
 
-    interface OnCategoryItemClickListener {
+    interface OnFoodItemClickListener {
         fun onItemClick(item: Food, position: Int)
     }
 
