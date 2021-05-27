@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
@@ -15,20 +16,30 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import rs.raf.projekat2.milos_maksimovic_rn4318.R
+import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.Food
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.FoodCategory
 import rs.raf.projekat2.milos_maksimovic_rn4318.databinding.ActivityMainBinding
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.CategoryContract
+import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.FoodContract
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.recycler.adapter.CategoryAdapter
+import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.recycler.adapter.FoodAdapter
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.CategoryState
+import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.FoodState
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.viewmodel.CategoryViewModel
+import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.viewmodel.FoodViewModel
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickListener {
+class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickListener,
+    FoodAdapter.OnCategoryItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val mainViewModel: CategoryContract.ViewModel by viewModel<CategoryViewModel>()
-    private lateinit var adapter: CategoryAdapter
+    private val categoryViewModel: CategoryContract.ViewModel by viewModel<CategoryViewModel>()
+    private val foodByNameViewModel: FoodContract.ViewModel by viewModel<FoodViewModel>()
+
+    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var foodByNameAdapter: FoodAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +64,12 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
                 searchView.setQuery("", false)
                 searchItem.collapseActionView()
 
-
-
-                Toast.makeText(this@MainActivity, "Looking for $query", Toast.LENGTH_LONG).show()
+                if (query != null) {
+                    showHide(binding.categoryListRv)
+                    showHide(binding.foodByNameListRv)
+                    foodByNameViewModel.fetchAllFoods(query, 1)
+                    foodByNameViewModel.getAllByName(query)
+                }
                 return true
             }
 
@@ -93,49 +107,96 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
 
     private fun initRecycler() {
         binding.categoryListRv.layoutManager = LinearLayoutManager(this)
-        adapter = CategoryAdapter(this, Glide.with(this));
-        binding.categoryListRv.adapter = adapter
+        categoryAdapter = CategoryAdapter(this, Glide.with(this));
+        binding.categoryListRv.adapter = categoryAdapter
+
+        binding.foodByNameListRv.layoutManager = LinearLayoutManager(this)
+        foodByNameAdapter = FoodAdapter(this, Glide.with(this));
+        binding.foodByNameListRv.adapter = foodByNameAdapter
     }
 
     private fun initObservers() {
-        mainViewModel.categoryState.observe(this, Observer {
-            renderState(it)
+        categoryViewModel.categoryState.observe(this, Observer {
+            renderStateCategory(it)
         })
 
-        mainViewModel.getAllCategories()
+        foodByNameViewModel.foodState.observe(this, Observer {
+            renderStateFood(it)
+        })
 
-        mainViewModel.fetchAllCategories()
+        categoryViewModel.getAllCategories()
+
+        categoryViewModel.fetchAllCategories()
+    }
+
+    private fun renderStateCategory(state: CategoryState) {
+        when (state) {
+            is CategoryState.Success -> {
+                showLoadingStateCategory(false)
+                categoryAdapter.submitList(state.categories)
+            }
+            is CategoryState.Error -> {
+                showLoadingStateCategory(false)
+                Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
+            }
+            is CategoryState.DataFetched -> {
+                showLoadingStateCategory(false)
+                Toast.makeText(this, "Fresh data fetched from the server", Toast.LENGTH_LONG)
+                    .show()
+            }
+            is CategoryState.Loading -> {
+                showLoadingStateCategory(true)
+            }
+        }
+    }
+
+    private fun renderStateFood(state: FoodState) {
+        when (state) {
+            is FoodState.Success -> {
+                showLoadingStateFood(false)
+                foodByNameAdapter.submitList(state.foods)
+            }
+            is FoodState.Error -> {
+                showLoadingStateFood(false)
+                Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
+            }
+            is FoodState.DataFetched -> {
+                showLoadingStateFood(false)
+                Toast.makeText(this, "Fresh data fetched from the server", Toast.LENGTH_LONG)
+                    .show()
+            }
+            is FoodState.Loading -> {
+                showLoadingStateFood(true)
+            }
+        }
+    }
+
+    private fun showLoadingStateFood(loading: Boolean) {
+        //binding.inputEt.isVisible = !loading
+        binding.foodByNameListRv.isVisible = !loading
+        binding.loadingPb.isVisible = loading
+    }
+
+    private fun showLoadingStateCategory(loading: Boolean) {
+        //binding.inputEt.isVisible = !loading
+        binding.categoryListRv.isVisible = !loading
+        binding.loadingPb.isVisible = loading
+    }
+
+    fun showHide(view: View) {
+        view.visibility = if (view.visibility == View.VISIBLE) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
     }
 
     override fun onItemClick(item: FoodCategory, position: Int) {
         TODO("Not yet implemented")
     }
 
-    private fun renderState(state: CategoryState) {
-        when (state) {
-            is CategoryState.Success -> {
-                showLoadingState(false)
-                adapter.submitList(state.categories)
-            }
-            is CategoryState.Error -> {
-                showLoadingState(false)
-                Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
-            }
-            is CategoryState.DataFetched -> {
-                showLoadingState(false)
-                Toast.makeText(this, "Fresh data fetched from the server", Toast.LENGTH_LONG)
-                    .show()
-            }
-            is CategoryState.Loading -> {
-                showLoadingState(true)
-            }
-        }
-    }
-
-    private fun showLoadingState(loading: Boolean) {
-        //binding.inputEt.isVisible = !loading
-        binding.categoryListRv.isVisible = !loading
-        binding.loadingPb.isVisible = loading
+    override fun onItemClick(item: Food, position: Int) {
+        TODO("Not yet implemented")
     }
 
 }

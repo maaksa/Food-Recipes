@@ -9,7 +9,7 @@ import java.util.*
 data class FoodEntity(
     @PrimaryKey(autoGenerate = true)
     val uid: Long,
-    val id: String,
+    val id: Int,
     @ColumnInfo(name = "image_url")
     val imageURL: String,
     @ColumnInfo(name = "date")
@@ -17,7 +17,7 @@ data class FoodEntity(
     @ColumnInfo(name = "category_name")
     val categoryName: String,
     @ColumnInfo(name = "social_rank")
-    val socialRank: String,
+    val socialRank: Double,
     val title: String,
     val publisher: String,
     val saved: Int

@@ -11,8 +11,8 @@ interface FoodService {
     @GET("search")
     fun getAll(
         @Query("q") querySearch: String,
-        @Query("page") page: Int
-    ): Observable<List<FoodsResponse>>
+        @Query("page") page: Int = 1
+    ): Observable<FoodsResponse>
 
     @GET("get")
     fun getById(@Query("rId") recipeId: Int): Observable<FoodRecipeDetailsResponse>
