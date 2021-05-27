@@ -77,7 +77,7 @@ fun createOkHttpClient(): OkHttpClient {
     return httpClient.build()
 }
 
-// Metoda koja kreira servis
+//// Metoda koja kreira servis
 inline fun <reified T> create(retrofit: Retrofit): T {
     return retrofit.create<T>(T::class.java)
 }

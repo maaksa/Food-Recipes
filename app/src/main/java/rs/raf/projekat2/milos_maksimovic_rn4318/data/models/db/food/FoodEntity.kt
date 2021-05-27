@@ -9,17 +9,17 @@ import java.util.*
 data class FoodEntity(
     @PrimaryKey(autoGenerate = true)
     val uid: Long,
-    var id: String,
+    val id: String,
     @ColumnInfo(name = "image_url")
     val imageURL: String,
     @ColumnInfo(name = "date")
-    var date: Date = Date(),
+    val date: Date = Date(),
     @ColumnInfo(name = "category_name")
-    var categoryName: String,
+    val categoryName: String,
     @ColumnInfo(name = "social_rank")
-    var socialRank: String,
-    var title: String,
-    var publisher: String,
+    val socialRank: String,
+    val title: String,
+    val publisher: String,
     val saved: Int
 )
 

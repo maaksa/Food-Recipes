@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "categories")
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
-    var id: Long,
+    val id: Long,
     @ColumnInfo(name = "image_url")
-    var imageUrl: String,
-    var title: String
+    val imageUrl: String,
+    val title: String
 )
 

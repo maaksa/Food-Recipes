@@ -22,6 +22,7 @@ abstract class FoodDao {
     @Query("SELECT * FROM foods WHERE id LIKE :id")
     abstract fun getById(id: String): Observable<FoodWithRecipe>
 
+    //puca
 //    @Transaction
 //    @Query("SELECT * FROM recipes WHERE food_id == :foodId")
 //    abstract fun getFoodWithRecipeById(foodId: Long): Observable<List<FoodWithRecipe>>
