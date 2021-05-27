@@ -1,13 +1,20 @@
 package rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.activities
 
+import android.app.SearchManager
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import rs.raf.projekat2.milos_maksimovic_rn4318.R
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.FoodCategory
 import rs.raf.projekat2.milos_maksimovic_rn4318.databinding.ActivityMainBinding
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.CategoryContract
@@ -30,6 +37,49 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
         setContentView(binding.root)
 
         init()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.app_bar_menu, menu)
+        val manager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchItem = menu?.findItem(R.id.miSearch)
+        val searchView = searchItem?.actionView as SearchView
+
+        searchView.setSearchableInfo(manager.getSearchableInfo(componentName))
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                searchView.setQuery("", false)
+                searchItem.collapseActionView()
+
+
+
+                Toast.makeText(this@MainActivity, "Looking for $query", Toast.LENGTH_LONG).show()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.miCategories -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            R.id.miSavedMenus -> Toast.makeText(
+                this,
+                "You clicked on Saved Menus",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        return true
     }
 
     private fun init() {
