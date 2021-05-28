@@ -5,6 +5,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.category.CategoryEntity
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.food.FoodEntity
+import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.food.FoodRecipeEntity
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.food.FoodWithRecipe
 
 @Dao
@@ -18,10 +19,6 @@ abstract class FoodDao {
 
     @Query("SELECT * FROM foods WHERE saved == 1")
     abstract fun getAllSaved(): Observable<List<FoodEntity>>
-
-    @Transaction
-    @Query("SELECT * FROM foods WHERE id LIKE :id")
-    abstract fun getById(id: String): Observable<FoodWithRecipe>
 
     @Query("DELETE FROM foods")
     abstract fun deleteAll()
@@ -38,8 +35,4 @@ abstract class FoodDao {
         insertAll(entities).blockingAwait()
     }
 
-    //puca
-//    @Transaction
-//    @Query("SELECT * FROM recipes WHERE food_id == :foodId")
-//    abstract fun getFoodWithRecipeById(foodId: Long): Observable<List<FoodWithRecipe>>
 }

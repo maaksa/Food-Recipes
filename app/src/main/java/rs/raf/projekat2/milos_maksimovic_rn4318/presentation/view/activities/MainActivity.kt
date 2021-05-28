@@ -135,9 +135,6 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
             renderStateFood(it)
         })
 
-//        showHide(binding.categoryListRv)
-//        showHide(binding.foodByNameListRv)
-
         categoryViewModel.getAllCategories()
 
         categoryViewModel.fetchAllCategories()
@@ -182,6 +179,12 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
             is FoodState.Loading -> {
                 showLoadingStateFood(true)
             }
+//            is FoodState.SuccessRecipe -> {
+//                showLoadingStateCategory(false)
+//                val intent = Intent(this, SingleFoodActivity::class.java)
+//                intent.putExtra("recipe_id", state.foodRecipe.categoryImgUrl)
+//                startActivity(intent)
+//            }
         }
     }
 
@@ -217,7 +220,9 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
     }
 
     override fun onItemClick(item: Food, position: Int) {
-        TODO("Not yet implemented")
+        val intent = Intent(this, SingleFoodActivity::class.java)
+        intent.putExtra("recipe_id", item.id)
+        startActivity(intent)
     }
 
 }

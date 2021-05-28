@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 
 data class FoodResponse(
 
-    val id: Int,
+    val recipe_id: String,
     val image_url: String,
     val social_rank: Double,
     val publisher: String,

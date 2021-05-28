@@ -6,11 +6,11 @@ import androidx.room.Relation
 class FoodWithRecipe(
 
     @Embedded
-    val studentEntity: FoodEntity,
+    val foodEntity: FoodEntity,
     @Relation(
         parentColumn = "id",
         entityColumn = "food_id"
     )
-    val foodRecipe: FoodRecipeEntity?
+    val foodRecipeEntity: FoodRecipeEntity?
 
 )

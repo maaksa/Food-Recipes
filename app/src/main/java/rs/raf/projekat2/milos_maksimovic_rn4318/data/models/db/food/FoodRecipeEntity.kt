@@ -7,8 +7,11 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "recipes")
 data class FoodRecipeEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Int,
     @ColumnInfo(name = "food_id")
     val foodId: String,
+    val category_name: String,
+    val category_img: String,
+    val score: Double,
     val recipe: String
 )

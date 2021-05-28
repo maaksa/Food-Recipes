@@ -6,12 +6,9 @@ import retrofit2.http.Query
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.api.recipe.FoodRecipeDetailsResponse
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.api.food.FoodsResponse
 
-interface FoodService {
+interface FoodRecipeService {
 
-    @GET("search")
-    fun getAll(
-        @Query("q") querySearch: String,
-        @Query("page") page: Int = 1
-    ): Observable<FoodsResponse>
+    @GET("get")
+    fun getRecipeById(@Query("rId") recipeId: String): Observable<FoodRecipeDetailsResponse>
 
 }

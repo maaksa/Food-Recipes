@@ -10,6 +10,7 @@ import org.koin.core.logger.Level
 import rs.raf.projekat2.milos_maksimovic_rn4318.modules.categoryModule
 import rs.raf.projekat2.milos_maksimovic_rn4318.modules.coreModule
 import rs.raf.projekat2.milos_maksimovic_rn4318.modules.foodModule
+import rs.raf.projekat2.milos_maksimovic_rn4318.modules.foodRecipeModule
 import timber.log.Timber
 
 class FoodRecipesApplication : Application() {
@@ -32,7 +33,8 @@ class FoodRecipesApplication : Application() {
         val modules = listOf(
             coreModule,
             foodModule,
-            categoryModule
+            categoryModule,
+            foodRecipeModule
         )
         startKoin {
             androidLogger(Level.ERROR)

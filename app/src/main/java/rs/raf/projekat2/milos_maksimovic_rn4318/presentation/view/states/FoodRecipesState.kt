@@ -4,9 +4,9 @@ import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.Food
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.FoodCategory
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.FoodRecipe
 
-sealed class FoodState {
-    object Loading : FoodState()
-    object DataFetched : FoodState()
-    data class Success(var foods: List<Food>) : FoodState()
-    data class Error(val message: String) : FoodState()
+sealed class FoodRecipesState {
+    object Loading : FoodRecipesState()
+    object DataFetched : FoodRecipesState()
+    data class Success(var foodRecipe: FoodRecipe) : FoodRecipesState()
+    data class Error(val message: String) : FoodRecipesState()
 }

@@ -2,13 +2,16 @@ package rs.raf.projekat2.milos_maksimovic_rn4318.data.repositories.food
 
 import io.reactivex.Completable
 import io.reactivex.Observable
+import org.koin.ext.scope
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.local.food.FoodDao
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.remote.FoodService
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.category.CategoryEntity
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.food.FoodEntity
+import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.food.FoodRecipeEntity
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.resources.Resource
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.Food
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.FoodCategory
+import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.FoodRecipe
 import timber.log.Timber
 import java.util.*
 
@@ -24,7 +27,7 @@ class FoodRepositoryImpl(
                 val entities = it.recipes.map {
                     FoodEntity(
                         0,
-                        it.id,
+                        it.recipe_id,
                         it.image_url,
                         Date(),
                         querySearch,
@@ -57,10 +60,6 @@ class FoodRepositoryImpl(
                     )
                 }
             }
-    }
-
-    override fun fetchById(): Observable<Resource<Unit>> {
-        TODO("Not yet implemented")
     }
 
     override fun getAllSaved(): Observable<List<Food>> {
