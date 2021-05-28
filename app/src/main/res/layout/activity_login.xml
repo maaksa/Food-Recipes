@@ -4,23 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.view.activities.LoginActivity">
+    tools:context=".presentation.view.activities.LoginActivity"
+    android:background="@color/single_recipe_background"
+    android:layout_margin="16dp">
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/pinEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter PIN"
+        android:inputType="number"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/loginBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/nameEt"
         app:layout_constraintVertical_bias="0.335" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/nameEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="216dp"
@@ -32,12 +35,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/loginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="156dp"
         android:text="Login"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
