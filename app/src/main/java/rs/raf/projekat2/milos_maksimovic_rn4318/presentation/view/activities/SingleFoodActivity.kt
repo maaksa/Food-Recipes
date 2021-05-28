@@ -60,6 +60,19 @@ class SingleFoodActivity : AppCompatActivity() {
             is FoodRecipesState.Success -> {
                 showLoadingStateFood(false)
                 Glide.with(this).load(state.foodRecipe.categoryImgUrl).into(binding.imgTv)
+                binding.scoreTv.text = state.foodRecipe.score.toInt().toString()
+                binding.titleTv.text = state.foodRecipe.categoryName
+
+                var str = state.foodRecipe.ingredients.replace("[", "").replace("]", "")
+                var list = str.split(",")
+                var new = ""
+
+                for (l in list) {
+                    new = new + l + "\n"
+                }
+
+                binding.textView.text = new
+
             }
             is FoodRecipesState.Error -> {
                 showLoadingStateFood(false)
