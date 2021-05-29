@@ -4,6 +4,7 @@ import java.io.Serializable
 
 data class FoodRecipe(
     val id: Int,
+    val foodid: String,
     val categoryName: String,
     val categoryImgUrl: String,
     val score: Double,

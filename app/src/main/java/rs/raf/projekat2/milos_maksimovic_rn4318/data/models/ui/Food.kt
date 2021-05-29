@@ -2,10 +2,10 @@ package rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui
 
 import java.util.*
 
-class Food(
+data class Food(
     var id: String,
     val imageURL: String,
-    var date: Date = Date(),
+    var date: Date,
     var categoryName: String,
     var foodName: String,
     var publisher: String,

@@ -20,7 +20,7 @@ abstract class FoodDao {
     @Query("SELECT * FROM foods WHERE saved == 1")
     abstract fun getAllSaved(): Observable<List<FoodEntity>>
 
-    @Query("DELETE FROM foods")
+    @Query("DELETE FROM foods WHERE saved == 0")
     abstract fun deleteAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

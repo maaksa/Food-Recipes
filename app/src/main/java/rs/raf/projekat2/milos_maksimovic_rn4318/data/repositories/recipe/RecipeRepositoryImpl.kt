@@ -1,10 +1,12 @@
 package rs.raf.projekat2.milos_maksimovic_rn4318.data.repositories.recipe
 
+import io.reactivex.Completable
 import io.reactivex.Observable
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.local.food.FoodDao
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.local.food.FoodRecipeDao
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.remote.FoodRecipeService
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.remote.FoodService
+import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.food.FoodEntity
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.food.FoodRecipeEntity
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.resources.Resource
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.FoodRecipe
@@ -14,7 +16,7 @@ class RecipeRepositoryImpl(
     private val localDataSource: FoodRecipeDao,
     private val remoteDataSource: FoodRecipeService
 ) : RecipeRepository {
-    
+
     override fun fetchRecipeById(id: String): Observable<Resource<Unit>> {
         return remoteDataSource
             .getRecipeById(id)
@@ -45,6 +47,7 @@ class RecipeRepositoryImpl(
             it.foodRecipeEntity?.let { it1 ->
                 FoodRecipe(
                     it1.id,
+                    it1.foodId,
                     it1.category_name,
                     it1.category_img,
                     it1.score,
@@ -52,6 +55,18 @@ class RecipeRepositoryImpl(
                 )
             }
         }
+    }
+
+    override fun insert(entity: FoodRecipe): Completable {
+        val foodRecipeEntity = FoodRecipeEntity(
+            0,
+            entity.foodid,
+            entity.categoryName,
+            entity.categoryImgUrl,
+            entity.score,
+            entity.ingredients
+        )
+        return localDataSource.insert(foodRecipeEntity)
     }
 
 }

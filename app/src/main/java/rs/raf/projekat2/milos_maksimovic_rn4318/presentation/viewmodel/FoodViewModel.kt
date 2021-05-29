@@ -7,10 +7,12 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.resources.Resource
+import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.Food
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.repositories.category.CategoryRepository
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.repositories.food.FoodRepository
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.CategoryContract
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.FoodContract
+import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.AddFoodState
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.CategoryState
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.FoodState
 import timber.log.Timber
@@ -22,6 +24,7 @@ class FoodViewModel(
 
     private val subscriptions = CompositeDisposable()
     override val foodState: MutableLiveData<FoodState> = MutableLiveData()
+    override val addDone: MutableLiveData<AddFoodState> = MutableLiveData()
 
     private val publishSubject: PublishSubject<String> = PublishSubject.create()
 
@@ -79,6 +82,23 @@ class FoodViewModel(
 
     override fun getAllByName(title: String) {
         publishSubject.onNext(title)
+    }
+
+    override fun addFood(food: Food) {
+        val subscription = foodRepository
+            .insert(food)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    addDone.value = AddFoodState.Success
+                },
+                {
+                    addDone.value = AddFoodState.Error("Error happened while adding movie")
+                    Timber.e(it)
+                }
+            )
+        subscriptions.add(subscription)
     }
 
     override fun onCleared() {

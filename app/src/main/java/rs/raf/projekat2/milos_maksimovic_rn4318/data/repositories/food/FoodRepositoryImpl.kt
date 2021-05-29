@@ -62,11 +62,22 @@ class FoodRepositoryImpl(
             }
     }
 
-    override fun getAllSaved(): Observable<List<Food>> {
-        TODO("Not yet implemented")
+    override fun insert(entity: Food): Completable {
+        val foodEntity = FoodEntity(
+            0,
+            entity.id,
+            entity.imageURL,
+            entity.date,
+            entity.categoryName,
+            entity.score,
+            entity.foodName,
+            entity.publisher,
+            1
+        )
+        return localDataSource.insert(foodEntity)
     }
 
-    override fun insert(entity: Food): Completable {
+    override fun getAllSaved(): Observable<List<Food>> {
         TODO("Not yet implemented")
     }
 }

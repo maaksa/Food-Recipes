@@ -55,7 +55,7 @@ class SingleFoodActivity : AppCompatActivity() {
             val intent = Intent(this, SaveRecipeActivity::class.java)
             intent.putExtra("foodRecipe", foodRecipieIntent)
             startActivity(intent)
-            finish()
+            //finish()
         }
     }
 
@@ -88,6 +88,7 @@ class SingleFoodActivity : AppCompatActivity() {
 
                 foodRecipieIntent = FoodRecipe(
                     state.foodRecipe.id,
+                    state.foodRecipe.foodid,
                     state.foodRecipe.categoryName,
                     state.foodRecipe.categoryImgUrl,
                     state.foodRecipe.score,

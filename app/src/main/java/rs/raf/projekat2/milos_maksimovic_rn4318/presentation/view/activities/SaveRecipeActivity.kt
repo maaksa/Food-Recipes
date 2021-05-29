@@ -22,8 +22,10 @@ import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.Food
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.FoodRecipe
 import rs.raf.projekat2.milos_maksimovic_rn4318.databinding.ActivitySaveRecipeBinding
 import rs.raf.projekat2.milos_maksimovic_rn4318.databinding.ActivitySingleFoodBinding
+import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.FoodContract
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.FoodRecipesContract
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.viewmodel.FoodRecipesViewModel
+import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.viewmodel.FoodViewModel
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,11 +34,15 @@ class SaveRecipeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
     private lateinit var binding: ActivitySaveRecipeBinding
     private lateinit var foodRecipe: FoodRecipe
-    private lateinit var date: String
+    private var date: String = "01 January 2021"
     private lateinit var categoryFood: String
+    private lateinit var pathToSave: String
 
     var category = arrayOf("Breakfast", "Lunch", "Dinner")
     var spinner: Spinner? = null
+
+    private val foodRecipeViewModel: FoodRecipesContract.ViewModel by viewModel<FoodRecipesViewModel>()
+    private val foodViewModel: FoodContract.ViewModel by viewModel<FoodViewModel>()
 
     var formatDate = SimpleDateFormat("dd MMMM YYYY", Locale.US)
 
@@ -90,16 +96,48 @@ class SaveRecipeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             builder.setPositiveButton("Open") { dialogInterface: DialogInterface, i: Int ->
                 val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 try {
-                    //pokrecemo activity for result
                     getPicture.launch(takePictureIntent)
-                } catch (e: ActivityNotFoundException) {//posto ne mozemo da garantujemo da nas telfon ima tu app koju pokrecemo kao implicitni intent
+                } catch (e: ActivityNotFoundException) {
                     Toast.makeText(this, "Camera app not found!", Toast.LENGTH_SHORT).show()
                 }
             }
             builder.setNegativeButton("No") { dialogInterface: DialogInterface, i: Int ->
                 Glide.with(this).load(foodRecipe.categoryImgUrl).into(binding.addImgIv)
+                pathToSave = foodRecipe.categoryImgUrl
             }
             builder.show()
+        }
+
+        binding.addBtn.setOnClickListener {
+
+            val temp: UUID = UUID.randomUUID()
+
+            val foodToAdd = Food(
+                id = java.lang.Long.toHexString(temp.mostSignificantBits)
+                        + java.lang.Long.toHexString(temp.leastSignificantBits),
+                imageURL = pathToSave,
+                date = formatDate.parse(date),
+                foodName = categoryFood,
+                categoryName = foodRecipe.categoryName,
+                publisher = "",
+                score = foodRecipe.score
+            )
+
+            val recipeToAdd = FoodRecipe(
+                id = 0,
+                foodid = java.lang.Long.toHexString(temp.mostSignificantBits)
+                        + java.lang.Long.toHexString(temp.leastSignificantBits),
+                categoryName = foodRecipe.categoryName,
+                categoryImgUrl = pathToSave,
+                score = foodRecipe.score,
+                ingredients = foodRecipe.ingredients
+            )
+
+//            Toast.makeText(this, recipeToAdd.toString(), Toast.LENGTH_LONG).show()
+//            Toast.makeText(this, foodToAdd.toString(), Toast.LENGTH_LONG).show()
+
+            foodViewModel.addFood(foodToAdd)
+            //foodRecipeViewModel.addFoodRecipe(recipeToAdd)
         }
     }
 
@@ -114,14 +152,16 @@ class SaveRecipeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
     private val getPicture =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            //dobijamo rezultat od intenta od kog ocekujemo da vrati
             if (it.resultCode == RESULT_OK) {
                 val bundle = it.data?.extras
                 val finalPhoto: Bitmap =
-                    bundle?.get("data") as Bitmap //vraca Any "data" kljuc pa kastujemo u Bitmap
+                    bundle?.get("data") as Bitmap
                 val path: String? = saveToInternalStorage(finalPhoto, "slika")
                 if (path != null) {
+                    pathToSave = path
                     loadImageFromStorage(path, "slika")
+                } else {
+                    pathToSave = foodRecipe.categoryImgUrl
                 }
             }
         }

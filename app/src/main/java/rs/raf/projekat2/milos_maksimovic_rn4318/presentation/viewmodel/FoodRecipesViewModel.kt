@@ -7,15 +7,14 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.resources.Resource
+import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.FoodRecipe
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.repositories.category.CategoryRepository
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.repositories.food.FoodRepository
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.repositories.recipe.RecipeRepository
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.CategoryContract
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.FoodContract
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.FoodRecipesContract
-import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.CategoryState
-import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.FoodRecipesState
-import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.FoodState
+import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -25,6 +24,7 @@ class FoodRecipesViewModel(
 
     private val subscriptions = CompositeDisposable()
     override val foodRecipesState: MutableLiveData<FoodRecipesState> = MutableLiveData()
+    override val addDone: MutableLiveData<AddFoodRecipeState> = MutableLiveData()
 
     private val publishSubject: PublishSubject<String> = PublishSubject.create()
 
@@ -83,6 +83,23 @@ class FoodRecipesViewModel(
 
     override fun getRecipeById(id: String) {
         publishSubject.onNext(id)
+    }
+
+    override fun addFoodRecipe(foodRecip: FoodRecipe) {
+        val subscription = foodRecipesRepository
+            .insert(foodRecip)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    addDone.value = AddFoodRecipeState.Success
+                },
+                {
+                    addDone.value = AddFoodRecipeState.Error("Error happened while adding movie")
+                    Timber.e(it)
+                }
+            )
+        subscriptions.add(subscription)
     }
 
     override fun onCleared() {
