@@ -29,7 +29,7 @@ class FoodRepositoryImpl(
                         0,
                         it.recipe_id,
                         it.image_url,
-                        Date(),
+                        "",
                         querySearch,
                         it.social_rank,
                         it.title,
@@ -78,6 +78,20 @@ class FoodRepositoryImpl(
     }
 
     override fun getAllSaved(): Observable<List<Food>> {
-        TODO("Not yet implemented")
+        return localDataSource
+            .getAllSaved()
+            .map {
+                it.map {
+                    Food(
+                        it.id,
+                        it.imageURL,
+                        it.date,
+                        it.categoryName,
+                        it.title,
+                        it.publisher,
+                        it.socialRank
+                    )
+                }
+            }
     }
 }

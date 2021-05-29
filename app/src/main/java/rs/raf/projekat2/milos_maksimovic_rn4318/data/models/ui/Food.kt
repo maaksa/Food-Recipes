@@ -5,7 +5,7 @@ import java.util.*
 data class Food(
     var id: String,
     val imageURL: String,
-    var date: Date,
+    var date: String,
     var categoryName: String,
     var foodName: String,
     var publisher: String,

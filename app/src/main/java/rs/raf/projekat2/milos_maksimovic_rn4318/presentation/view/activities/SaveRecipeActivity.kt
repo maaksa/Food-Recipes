@@ -36,12 +36,11 @@ class SaveRecipeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     private lateinit var foodRecipe: FoodRecipe
     private var date: String = "01 January 2021"
     private lateinit var categoryFood: String
-    private lateinit var pathToSave: String
+    private var pathToSave: String = ""
 
     var category = arrayOf("Breakfast", "Lunch", "Dinner")
     var spinner: Spinner? = null
 
-    private val foodRecipeViewModel: FoodRecipesContract.ViewModel by viewModel<FoodRecipesViewModel>()
     private val foodViewModel: FoodContract.ViewModel by viewModel<FoodViewModel>()
 
     var formatDate = SimpleDateFormat("dd MMMM YYYY", Locale.US)
@@ -63,6 +62,7 @@ class SaveRecipeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
     private fun initUi() {
         foodRecipe = intent.getSerializableExtra("foodRecipe") as FoodRecipe
+        pathToSave = foodRecipe.categoryImgUrl
 
         binding.titleTv.text = foodRecipe.categoryName
 
@@ -110,13 +110,11 @@ class SaveRecipeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
         binding.addBtn.setOnClickListener {
 
-            val temp: UUID = UUID.randomUUID()
 
             val foodToAdd = Food(
-                id = java.lang.Long.toHexString(temp.mostSignificantBits)
-                        + java.lang.Long.toHexString(temp.leastSignificantBits),
+                id = foodRecipe.foodid,
                 imageURL = pathToSave,
-                date = formatDate.parse(date),
+                date = date,
                 foodName = categoryFood,
                 categoryName = foodRecipe.categoryName,
                 publisher = "",
@@ -125,19 +123,18 @@ class SaveRecipeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
             val recipeToAdd = FoodRecipe(
                 id = 0,
-                foodid = java.lang.Long.toHexString(temp.mostSignificantBits)
-                        + java.lang.Long.toHexString(temp.leastSignificantBits),
+                foodid = foodRecipe.foodid,
                 categoryName = foodRecipe.categoryName,
                 categoryImgUrl = pathToSave,
                 score = foodRecipe.score,
                 ingredients = foodRecipe.ingredients
             )
 
-//            Toast.makeText(this, recipeToAdd.toString(), Toast.LENGTH_LONG).show()
-//            Toast.makeText(this, foodToAdd.toString(), Toast.LENGTH_LONG).show()
 
             foodViewModel.addFood(foodToAdd)
             //foodRecipeViewModel.addFoodRecipe(recipeToAdd)
+            Toast.makeText(this, "You saved recipe", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 

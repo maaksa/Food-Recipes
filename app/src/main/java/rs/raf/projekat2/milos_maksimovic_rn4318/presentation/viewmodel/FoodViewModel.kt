@@ -101,6 +101,24 @@ class FoodViewModel(
         subscriptions.add(subscription)
     }
 
+    override fun getAllSaved() {
+        val subscription = foodRepository
+            .getAllSaved()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    foodState.value = FoodState.Success(it)
+                },
+                {
+                    foodState.value =
+                        FoodState.Error("Error happened while fetching data from db")
+                    Timber.e(it)
+                }
+            )
+        subscriptions.add(subscription)
+    }
+
     override fun onCleared() {
         super.onCleared()
         subscriptions.dispose()

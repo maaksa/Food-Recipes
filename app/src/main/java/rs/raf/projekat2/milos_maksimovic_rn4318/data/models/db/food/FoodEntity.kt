@@ -13,7 +13,7 @@ data class FoodEntity(
     @ColumnInfo(name = "image_url")
     val imageURL: String,
     @ColumnInfo(name = "date")
-    val date: Date = Date(),
+    val date: String,
     @ColumnInfo(name = "category_name")
     val categoryName: String,
     @ColumnInfo(name = "social_rank")

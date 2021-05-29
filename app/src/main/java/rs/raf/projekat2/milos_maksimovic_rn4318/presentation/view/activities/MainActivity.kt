@@ -23,6 +23,7 @@ import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.CategoryCo
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.FoodContract
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.recycler.adapter.CategoryAdapter
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.recycler.adapter.FoodAdapter
+import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.recycler.adapter.SavedFoodAdapter
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.CategoryState
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.states.FoodState
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.viewmodel.CategoryViewModel
@@ -30,7 +31,7 @@ import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.viewmodel.FoodViewM
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickListener,
-    FoodAdapter.OnFoodItemClickListener {
+    FoodAdapter.OnFoodItemClickListener, SavedFoodAdapter.OnSavedFoodItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
 
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var foodByNameAdapter: FoodAdapter
+    private lateinit var savedFoodAdapter: SavedFoodAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,11 +93,27 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
                 startActivity(intent)
                 finish()
             }
-            R.id.miSavedMenus -> Toast.makeText(
-                this,
-                "You clicked on Saved Menus",
-                Toast.LENGTH_SHORT
-            ).show()
+            R.id.miSavedMenus -> {
+                if (binding.savedFoodRv.visibility == View.VISIBLE) {
+                    if (binding.foodByNameListRv.visibility == View.VISIBLE) {
+                        showHide(binding.foodByNameListRv)
+                    }
+                    if (binding.categoryListRv.visibility == View.VISIBLE) {
+                        showHide(binding.categoryListRv)
+                    }
+                } else {
+                    showHide(binding.savedFoodRv)
+                    if (binding.foodByNameListRv.visibility == View.VISIBLE) {
+                        showHide(binding.foodByNameListRv)
+                    }
+                    if (binding.categoryListRv.visibility == View.VISIBLE) {
+                        showHide(binding.categoryListRv)
+                    }
+//            showHide(binding.savedFoodRv)
+//            showHide(binding.categoryListRv)
+                }
+                foodByNameViewModel.getAllSaved()
+            }
         }
         return true
     }
@@ -118,12 +136,35 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
         foodByNameAdapter = FoodAdapter(this, Glide.with(this));
         binding.foodByNameListRv.adapter = foodByNameAdapter
 
-        if (binding.categoryListRv.visibility == View.VISIBLE) {
+        binding.savedFoodRv.layoutManager = LinearLayoutManager(this)
+        savedFoodAdapter = SavedFoodAdapter(this, Glide.with(this));
+        binding.savedFoodRv.adapter = savedFoodAdapter
 
+        if (binding.categoryListRv.visibility == View.VISIBLE) {
+            if (binding.foodByNameListRv.visibility == View.VISIBLE) {
+                showHide(binding.foodByNameListRv)
+            }
+            if (binding.savedFoodRv.visibility == View.VISIBLE) {
+                showHide(binding.savedFoodRv)
+            }
         } else {
             showHide(binding.categoryListRv)
-            showHide(binding.foodByNameListRv)
+            if (binding.foodByNameListRv.visibility == View.VISIBLE) {
+                showHide(binding.foodByNameListRv)
+            }
+            if (binding.savedFoodRv.visibility == View.VISIBLE) {
+                showHide(binding.savedFoodRv)
+            }
+//            showHide(binding.savedFoodRv)
+//            showHide(binding.categoryListRv)
         }
+//        if (binding.categoryListRv.visibility == View.VISIBLE) {
+//
+//        } else {
+//            showHide(binding.savedFoodRv)
+//            showHide(binding.categoryListRv)
+//            showHide(binding.foodByNameListRv)
+//        }
     }
 
     private fun initObservers() {
@@ -166,6 +207,7 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
             is FoodState.Success -> {
                 showLoadingStateFood(false)
                 foodByNameAdapter.submitList(state.foods)
+                savedFoodAdapter.submitList(state.foods)
             }
             is FoodState.Error -> {
                 showLoadingStateFood(false)
@@ -202,16 +244,34 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
 
     override fun onItemClick(item: FoodCategory, position: Int) {
         if (binding.foodByNameListRv.visibility == View.VISIBLE) {
-
+            if (binding.savedFoodRv.visibility == View.VISIBLE) {
+                showHide(binding.savedFoodRv)
+            }
+            if (binding.categoryListRv.visibility == View.VISIBLE) {
+                showHide(binding.categoryListRv)
+            }
         } else {
-            showHide(binding.categoryListRv)
             showHide(binding.foodByNameListRv)
+            if (binding.savedFoodRv.visibility == View.VISIBLE) {
+                showHide(binding.savedFoodRv)
+            }
+            if (binding.categoryListRv.visibility == View.VISIBLE) {
+                showHide(binding.categoryListRv)
+            }
+//            showHide(binding.savedFoodRv)
+//            showHide(binding.categoryListRv)
         }
         foodByNameViewModel.fetchAllFoods(item.title, 1)
         foodByNameViewModel.getAllByName(item.title)
     }
 
     override fun onItemClick(item: Food, position: Int) {
+        val intent = Intent(this, SingleFoodActivity::class.java)
+        intent.putExtra("recipe_id", item.id)
+        startActivity(intent)
+    }
+
+    override fun onItemClick(item: Food, position: Int, title: String) {
         val intent = Intent(this, SingleFoodActivity::class.java)
         intent.putExtra("recipe_id", item.id)
         startActivity(intent)

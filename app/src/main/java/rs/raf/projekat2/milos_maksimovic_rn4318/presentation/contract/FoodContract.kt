@@ -17,6 +17,7 @@ interface FoodContract {
         fun fetchAllFoods(querySearch: String, page: Int)
         fun getAllByName(title: String)
         fun addFood(food: Food)
+        fun getAllSaved()
 
     }
 }

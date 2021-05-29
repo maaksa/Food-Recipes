@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
-    tools:context=".presentation.view.activities.MainActivity"
-    android:background="@color/single_recipe_background">
+    android:background="@color/single_recipe_background"
+    tools:context=".presentation.view.activities.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoryListRv"
@@ -14,16 +14,30 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingTop="16dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        android:visibility="visible"/>
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/foodByNameListRv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/savedFoodRv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
@@ -40,10 +54,10 @@
         android:id="@+id/loadingPb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
