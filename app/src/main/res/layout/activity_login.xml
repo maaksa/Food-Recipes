@@ -4,14 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.view.activities.LoginActivity"
     android:background="@color/single_recipe_background"
-    android:layout_margin="16dp">
+    tools:context=".presentation.view.activities.LoginActivity">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_baseline_fastfood_24"
+        app:layout_constraintBottom_toTopOf="@+id/nameEt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/pinEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:hint="Enter PIN"
         android:inputType="number"
         android:textSize="24sp"
@@ -26,7 +36,9 @@
         android:id="@+id/nameEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="216dp"
+        android:layout_marginEnd="16dp"
         android:hint="Enter Name"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

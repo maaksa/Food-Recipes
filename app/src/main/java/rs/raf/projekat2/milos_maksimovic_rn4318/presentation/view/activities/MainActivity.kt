@@ -179,23 +179,15 @@ class MainActivity : AppCompatActivity(), CategoryAdapter.OnCategoryItemClickLis
             is FoodState.Loading -> {
                 showLoadingStateFood(true)
             }
-//            is FoodState.SuccessRecipe -> {
-//                showLoadingStateCategory(false)
-//                val intent = Intent(this, SingleFoodActivity::class.java)
-//                intent.putExtra("recipe_id", state.foodRecipe.categoryImgUrl)
-//                startActivity(intent)
-//            }
         }
     }
 
     private fun showLoadingStateFood(loading: Boolean) {
-        //binding.inputEt.isVisible = !loading
         binding.foodByNameListRv.isVisible = !loading
         binding.loadingPb.isVisible = loading
     }
 
     private fun showLoadingStateCategory(loading: Boolean) {
-        //binding.inputEt.isVisible = !loading
         binding.categoryListRv.isVisible = !loading
         binding.loadingPb.isVisible = loading
     }

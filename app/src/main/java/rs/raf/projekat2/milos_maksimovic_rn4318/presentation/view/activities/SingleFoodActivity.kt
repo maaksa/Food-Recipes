@@ -1,5 +1,6 @@
 package rs.raf.projekat2.milos_maksimovic_rn4318.presentation.view.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -8,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import rs.raf.projekat2.milos_maksimovic_rn4318.R
+import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.ui.FoodRecipe
 import rs.raf.projekat2.milos_maksimovic_rn4318.databinding.ActivityLoginBinding
 import rs.raf.projekat2.milos_maksimovic_rn4318.databinding.ActivitySingleFoodBinding
 import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.contract.CategoryContract
@@ -23,6 +25,7 @@ import rs.raf.projekat2.milos_maksimovic_rn4318.presentation.viewmodel.FoodViewM
 class SingleFoodActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySingleFoodBinding
+    private lateinit var foodRecipieIntent: FoodRecipe
 
     private val foodRecipeViewModel: FoodRecipesContract.ViewModel by viewModel<FoodRecipesViewModel>()
 
@@ -44,6 +47,16 @@ class SingleFoodActivity : AppCompatActivity() {
 
     private fun initUi(recipeId: String) {
         initObservers(recipeId)
+        initListeners()
+    }
+
+    private fun initListeners() {
+        binding.saveRecipeBtn.setOnClickListener {
+            val intent = Intent(this, SaveRecipeActivity::class.java)
+            intent.putExtra("foodRecipe", foodRecipieIntent)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun initObservers(recipeId: String) {
@@ -73,6 +86,14 @@ class SingleFoodActivity : AppCompatActivity() {
 
                 binding.textView.text = new
 
+                foodRecipieIntent = FoodRecipe(
+                    state.foodRecipe.id,
+                    state.foodRecipe.categoryName,
+                    state.foodRecipe.categoryImgUrl,
+                    state.foodRecipe.score,
+                    state.foodRecipe.ingredients
+                )
+
             }
             is FoodRecipesState.Error -> {
                 showLoadingStateFood(false)
@@ -92,9 +113,7 @@ class SingleFoodActivity : AppCompatActivity() {
     }
 
     private fun showLoadingStateFood(loading: Boolean) {
-        //binding.inputEt.isVisible = !loading
-        //binding.foodByNameListRv.isVisible = !loading
-        //binding.loadingPb.isVisible = loading
+        binding.loadingPb.isVisible = loading
     }
 
 }

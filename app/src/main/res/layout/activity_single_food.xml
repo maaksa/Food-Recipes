@@ -49,7 +49,7 @@
 
 
     <ScrollView
-        android:background="@color/single_recipe_background2"
+        android:background="@color/category_background"
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -58,7 +58,7 @@
         android:layout_marginBottom="1dp"
         android:fillViewport="true"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/saveRecipeBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,12 +73,22 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/saveRecipeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save recipe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/loadingPb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
