@@ -121,15 +121,14 @@ class SaveRecipeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 score = foodRecipe.score
             )
 
-            val recipeToAdd = FoodRecipe(
-                id = 0,
-                foodid = foodRecipe.foodid,
-                categoryName = foodRecipe.categoryName,
-                categoryImgUrl = pathToSave,
-                score = foodRecipe.score,
-                ingredients = foodRecipe.ingredients
-            )
-
+//            val recipeToAdd = FoodRecipe(
+//                id = 0,
+//                foodid = foodRecipe.foodid,
+//                categoryName = foodRecipe.categoryName,
+//                categoryImgUrl = pathToSave,
+//                score = foodRecipe.score,
+//                ingredients = foodRecipe.ingredients
+//            )
 
             foodViewModel.addFood(foodToAdd)
             //foodRecipeViewModel.addFoodRecipe(recipeToAdd)
@@ -166,7 +165,7 @@ class SaveRecipeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     private fun saveToInternalStorage(bitmapImage: Bitmap, fileName: String): String? {
         val cw = ContextWrapper(applicationContext)
         // path to /data/data/yourapp/app_data/imageDir
-        val directory: File = cw.getDir("imageDir", Context.MODE_PRIVATE)
+        val directory: File = cw.getDir(foodRecipe.foodid, Context.MODE_PRIVATE)
         // Create imageDir
         val myPath = File(directory, "$fileName.jpg")
         var fos: FileOutputStream? = null

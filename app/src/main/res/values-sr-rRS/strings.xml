@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Food Recipes</string>
+    <string name="enter_pin">Unesite PIN</string>
+    <string name="enter_name">Unesite Ime</string>
+    <string name="select_date">Izaberite Datum</string>
+    <string name="add_to_menu">Dodaj u meni</string>
+    <string name="ingredients">Sastojci</string>
+    <string name="save_recipe">Sacuvaj recept</string>
+</resources>

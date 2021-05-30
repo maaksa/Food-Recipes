@@ -7,10 +7,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
-import rs.raf.projekat2.milos_maksimovic_rn4318.modules.categoryModule
-import rs.raf.projekat2.milos_maksimovic_rn4318.modules.coreModule
-import rs.raf.projekat2.milos_maksimovic_rn4318.modules.foodModule
-import rs.raf.projekat2.milos_maksimovic_rn4318.modules.foodRecipeModule
+import rs.raf.projekat2.milos_maksimovic_rn4318.modules.*
 import timber.log.Timber
 
 class FoodRecipesApplication : Application() {
@@ -34,7 +31,8 @@ class FoodRecipesApplication : Application() {
             coreModule,
             foodModule,
             categoryModule,
-            foodRecipeModule
+            foodRecipeModule,
+            userModule
         )
         startKoin {
             androidLogger(Level.ERROR)

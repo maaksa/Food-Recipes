@@ -29,7 +29,7 @@
         android:id="@+id/ingredientsTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ingredients"
+        android:text="@string/ingredients"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/scoreTv"
@@ -67,7 +67,7 @@
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:scrollbars="vertical"
             android:textSize="14sp" />
     </ScrollView>
@@ -76,7 +76,7 @@
         android:id="@+id/saveRecipeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save recipe"
+        android:text="@string/save_recipe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

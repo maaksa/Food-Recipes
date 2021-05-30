@@ -7,12 +7,14 @@ import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.local.category.
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.local.converters.DateConverter
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.local.food.FoodDao
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.local.food.FoodRecipeDao
+import rs.raf.projekat2.milos_maksimovic_rn4318.data.datasources.local.user.UserDao
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.category.CategoryEntity
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.food.FoodEntity
 import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.food.FoodRecipeEntity
+import rs.raf.projekat2.milos_maksimovic_rn4318.data.models.db.user.UserEntity
 
 @Database(
-    entities = [FoodEntity::class, FoodRecipeEntity::class, CategoryEntity::class],
+    entities = [FoodEntity::class, FoodRecipeEntity::class, CategoryEntity::class, UserEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -21,4 +23,6 @@ abstract class FoodDatabase : RoomDatabase() {
     abstract fun getFoodDao(): FoodDao
     abstract fun getCategoryDao(): CategoryDao
     abstract fun getFoodRecipeDao(): FoodRecipeDao
+    abstract fun getUserDao(): UserDao
+
 }
